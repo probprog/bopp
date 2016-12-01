@@ -6,7 +6,7 @@
   :plugins [[lein-codox "0.10.1"]
             [lein-gorilla "0.3.6"]]
   :dependencies [[org.clojure/clojure "1.8.0"]
-                 [anglican "1.1.0-SNAPSHOT-BOPP"]
+                 [org.clojars.tuananhle/anglican "1.1.0-BOPP"]
                  [deodorant "0.1.0-SNAPSHOT"]
                  [clatrix "0.5.0"]
                  [org.apache.commons/commons-math3 "3.6.1"]
