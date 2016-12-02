@@ -1,3 +1,4 @@
+.gorilla-port
 *.DS_Store
 .nrepl-port (1)
 /target
