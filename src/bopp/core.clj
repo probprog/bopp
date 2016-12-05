@@ -66,7 +66,6 @@
           opt-sample-summarizer = function used to calculate the desired untransformed target
                  from the samples.
           f-theta-inf = Value of f-theta set to if evaluates as +/- infinity (sign is maintained)
-                  FIXME This is a horrible hack
   Outputs: f-theta = Evaluated value as used for the bayes opt.  Note that the bayes
                opt always carries out maximization.  Minimization is thus done
                by maximiziation a function where f-theta = -target.
@@ -91,7 +90,7 @@
                              num-particles))
 
         f-theta (opt-bo-target-transformation (opt-sample-summarizer samples)) ;; Could be +-Infinity
-        f-theta (if (= f-theta (/ -1. 0)) ;; FIXME HACK!
+        f-theta (if (= f-theta (/ -1. 0))
                   (do (println "BOPP WARNING: Target evaluation has underflown!")
                     (- f-theta-inf))
                   (if (= f-theta (/ 1. 0))
@@ -229,7 +228,7 @@
 
          ;; Default acquisition optimization/AIS options
          acq-opt-num-starts 16
-         ais-num-steps 125
+         ais-num-steps nil
          ais-start-exponent 0.001
          ais-end-exponent 10
 
@@ -270,6 +269,9 @@
         f (fn [theta]
             (bo-target
              theta marg-q opt-query-args algorithm num-samples num-particles opt-bo-target-transformation opt-sample-summarizer f-theta-inf output-extractor))
+
+        ais-num-steps (or ais-num-steps
+                          (max 100 (int (* 2 (/ num-samples acq-opt-num-starts)))))
 
         ;; Setup the acqusition function optimizer
         aq-optimizer (fn [acq-fn]
