@@ -133,28 +133,39 @@
       optimized
 
   Optional keyword arguments:
+    Speed option:
+      speed-option ... Set the default options to a set of pre-tuned values to
+        be able to switch between the different modes of running depending on
+        speed. Can be overriden by user post-hoc.
+        [:normal, :fast] (Default: :fast)
+
     Bayesian optimization (BO) options:
-      BO Initialization options:
-        bo-initial-points ... Points to initialize BO
-        bo-num-scaling-thetas ... Number of points used to initialize scaling
-          for BO
-        bo-num-initial-thetas ... Number of points to initialize BO
+      bo-options ... look at documentation of Deodorant, this should be a map
+        with those options, i.e.:
 
-      BO Options:
-        bo-cov-fn-form bo-grad-cov-fn-hyper-form bo-mean-fn-form bo-gp-hyperprior-form
+          {:initial-points <initial-points>
+           :num-scaling-thetas <num-scaling-thetas>
+           :num-initial-points <num-initial-points>
+           :cov-fn-form <cov-fn-form>
+           ... etc.}
 
-      BO HMC options:
-        bo-hmc-step-size ... HMC step size
-        bo-hmc-num-leapfrog-steps ... Number of HMC leap-frog steps
-        bo-hmc-num-steps ... ?
-        bo-hmc-num-chains ... ?
-        bo-hmc-burn-in-proportion ... ?
-        bo-hmc-max-gps ... ?
+        You only need to provide options whose defaults that you want to
+        override.
 
-      BO Debug options:
-        bo-verbose ... Allow debug print outs from BO [boolean]
-        bo-debug-folder ... Path for the debug folder [string]
-        bo-plot-aq ... Generate debugging csv of acquisition functions [boolean]
+        (Default:
+          if :speed-option is :normal
+            {:hmc-num-leapfrog-steps 5
+             :hmc-num-mcmc-steps 50
+             :hmc-num-opt-steps 15
+             :hmc-num-chains 8
+             :hmc-max-gps 50}
+
+          if :speed-option is :fast
+            {:hmc-num-leapfrog-steps 2
+             :hmc-num-mcmc-steps 20
+             :hmc-num-opt-steps 10
+             :hmc-num-chains 4
+             :hmc-max-gps 20})
 
     Optimization options:
       opt-type ... Optimization type. Use :custom to customize the
@@ -177,9 +188,10 @@
 
     Acquisition optimization/AIS options:
       acq-opt-num-starts ... Number of parallel optimizations to prevent
-        multimodality. (Default: 16)
+        multimodality. (Default: 4 if :speed-option is :fast 16 if :normal)
       ais-num-steps ... Number of MCMC steps performed during acquisition
-        function optimization. (Default: 125)
+        function optimization.
+        (Default: (max 100 (int (* 2 (/ num-samples acq-opt-num-starts)))))
       ais-start-exponent ... Start exponent for annealed importance sampling
         (Default: 0.001)
       ais-end-exponent ... End exponent for annealed importance sampling
@@ -188,7 +200,7 @@
     Other options
       output-extractor ... Takes in an Anglican sample, returns its output.
         (Default: #(into [] (anglican.state/get-result sample));
-        Alternatives: anglican.state/get-result, anglican.state/get-predicts)
+         Alternatives: anglican.state/get-result, anglican.state/get-predicts)
       f-theta-inf ... Replace -Infinity during BO by this. (Default: -1e5)
 
   Output:
@@ -200,17 +212,11 @@
 
   See paper for details."
   [algorithm opt-query opt-query-args num-samples &
-   {:keys [;; BO Initialization options
-           bo-initial-points bo-num-scaling-thetas bo-num-initial-thetas
+   {:keys [;; Speed option
+           speed-option
 
-           ;; BO Options
-           bo-cov-fn-form bo-grad-cov-fn-hyper-form bo-mean-fn-form bo-gp-hyperprior-form
-
-           ;; BO HMC options
-           bo-hmc-step-size bo-hmc-num-leapfrog-steps bo-hmc-num-steps bo-hmc-num-chains bo-hmc-burn-in-proportion bo-hmc-max-gps
-
-           ;; BO Debug options
-           bo-verbose bo-debug-folder bo-plot-aq
+           ;; BO options
+           bo-options
 
            ;; Optimization options
            opt-type opt-program-transformation opt-sample-summarizer opt-bo-target-transformation
@@ -223,12 +229,12 @@
 
            ;; Other options
            output-extractor f-theta-inf]
-    :or {;; Default optimization options
+    :or {speed-option :fast
+
+         ;; Default optimization options
          opt-type :mmap
 
          ;; Default acquisition optimization/AIS options
-         acq-opt-num-starts 4 ;16
-         ais-num-steps nil
          ais-start-exponent 0.001
          ais-end-exponent 10
 
@@ -236,7 +242,28 @@
          output-extractor get-result-vector
          f-theta-inf -1e5 ; FIXME: Don't replace -Infinity with f-theta-inf; resample a random point instead.
          }}]
-  (let [;; Optimization options error checking
+  (let [;; Set default parameters based on speed-option
+        [acq-opt-num-starts-default
+         bo-options-default]
+        (case speed-option
+          :normal [16 {:hmc-num-leapfrog-steps 5
+                       :hmc-num-mcmc-steps 50
+                       :hmc-num-opt-steps 15
+                       :hmc-num-chains 8
+                       :hmc-max-gps 50}]
+          :fast [4 {:hmc-num-leapfrog-steps 2
+                    :hmc-num-mcmc-steps 20
+                    :hmc-num-opt-steps 10
+                    :hmc-num-chains 4
+                    :hmc-max-gps 20}]
+          (throw (Exception. (str "speed-option must be one of [:normal, :fast]. Supplied speed-option: " speed-option))))
+
+        ;; Override these parameters by ones provided by the user
+        [acq-opt-num-starts bo-options]
+        [(or acq-opt-num-starts acq-opt-num-starts-default)
+         (merge bo-options-default bo-options)]
+
+        ;; Optimization options error checking
         _ (if (and (not (= opt-type :custom))
                    (not (some nil? [opt-program-transformation opt-sample-summarizer opt-bo-target-transformation])))
             (throw (Exception. ("If opt-type is not :custom, opt-program-transformation, opt-sample-summarizer- opt-bo-target-transformation must not be supplied."))))
@@ -283,29 +310,6 @@
                              (take n-samples
                                    (infer :importance prior-q opt-query-args))))
 
-        ;; Setup BO options
-        bo-options {;; Initialization options
-                    :initial-points bo-initial-points
-                    :num-scaling-thetas bo-num-scaling-thetas
-                    :num-initial-samples bo-num-initial-thetas
-
-                    ;; General options
-                    :cov-fn-form bo-cov-fn-form
-                    :grad-cov-fn-hyper-form bo-grad-cov-fn-hyper-form
-                    :mean-fn-form bo-mean-fn-form
-                    :gp-hyperprior-form bo-gp-hyperprior-form
-
-                    ;; HMC options
-                    :hmc-step-size bo-hmc-step-size
-                    :hmc-num-leapfrog-steps bo-hmc-num-leapfrog-steps
-                    :hmc-num-steps bo-hmc-num-steps
-                    :hmc-num-chains bo-hmc-num-chains
-                    :hmc-burn-in-proportion bo-hmc-burn-in-proportion
-                    :hmc-max-gps bo-hmc-max-gps
-
-                    ;; Debug options
-                    :verbose bo-verbose
-                    :debug-folder bo-debug-folder
-                    :plot-aq bo-plot-aq}
+        ;; Setup BO options to pass in an apply
         bo-options (flatten (into [] (filter second bo-options)))]
     (apply bo/deodorant f aq-optimizer theta-sampler bo-options)))
