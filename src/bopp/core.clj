@@ -150,7 +150,7 @@
       speed-option ... Set the default options to a set of pre-tuned values to
         be able to switch between the different modes of running depending on
         speed. Can be overriden by user post-hoc.
-        [:normal, :fast] (Default: :fast)
+        [:careful, :fast] (Default: :fast)
 
     Bayesian optimization (BO) options:
       bo-options ... look at documentation of Deodorant, this should be a map
@@ -166,7 +166,7 @@
         override.
 
         (Default:
-          if :speed-option is :normal
+          if :speed-option is :careful
             {:hmc-num-leapfrog-steps 5
              :hmc-num-mcmc-steps 50
              :hmc-num-opt-steps 15
@@ -201,7 +201,7 @@
 
     Acquisition optimization/AIS options:
       acq-opt-num-starts ... Number of parallel optimizations to prevent
-        multimodality. (Default: 4 if :speed-option is :fast 16 if :normal)
+        multimodality. (Default: 4 if :speed-option is :fast 16 if :careful)
       ais-num-steps ... Number of MCMC steps performed during acquisition
         function optimization.
         (Default: (max 100 (int (* 2 (/ num-samples acq-opt-num-starts)))))
@@ -259,7 +259,7 @@
         [acq-opt-num-starts-default
          bo-options-default]
         (case speed-option
-          :normal [16 {:hmc-num-leapfrog-steps 5
+          :careful [16 {:hmc-num-leapfrog-steps 5
                        :hmc-num-mcmc-steps 50
                        :hmc-num-opt-steps 15
                        :hmc-num-chains 8
@@ -269,7 +269,7 @@
                     :hmc-num-opt-steps 10
                     :hmc-num-chains 4
                     :hmc-max-gps 20}]
-          (throw (Exception. (str "speed-option must be one of [:normal, :fast]. Supplied speed-option: " speed-option))))
+          (throw (Exception. (str "speed-option must be one of [:careful, :fast]. Supplied speed-option: " speed-option))))
 
         ;; Override these parameters by ones provided by the user
         [acq-opt-num-starts bo-options]
