@@ -126,7 +126,7 @@
 
   Input:
     algorithm ... Inference algorithm
-      [:smc, :pgibbs, :ipmcmc, :pcascade, :importance]
+      [:smc, :pcascade, :importance]
     opt-query ... Query to be optimized, defined by defopt.
     opt-query-args ... Arguments of opt-query.
     num-samples ... Number of samples for constructing the estimator to be
