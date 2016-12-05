@@ -3,7 +3,7 @@
   :url "http://www.robots.ox.ac.uk/~twgr/publications/"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
-  :plugins [[lein-codox "0.10.1"]
+  :plugins [[lein-codox "0.10.2"]
             [lein-gorilla "0.3.6"]]
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojars.tuananhle/anglican "1.1.0-BOPP"]
