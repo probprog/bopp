@@ -39,7 +39,7 @@ Rainforth, T., Le, T. A., van de Meent, J.-W., Osborne, M. A., & Wood, F. (2016)
 
 ### Defining target programs ###
 
-BOPP targets are specified using the macro defopt.  This is identical to defquery in [Anglican](http://www.robots.ox.ac.uk/~fwood/anglican) except that it takes as an extra input of the target variables to be optimized.  
+BOPP targets are specified using the macro `defopt`.  This is identical to `defquery` in [Anglican](http://www.robots.ox.ac.uk/~fwood/anglican) except that it takes as an extra input of the target variables to be optimized.  
 BOPP will optimize the evidence of the program with respect to the variables, whilst marginalizing out over the others.
 For example:
 
@@ -50,7 +50,7 @@ For example:
     (observe (normal (sqrt (* theta theta)) 0.5) y)))
 ```
 
-specifies a model where we wish to optimize theta, marginalizing out x.  
+specifies a model where we wish to optimize `theta`, marginalizing out `x`.  
 
 There are a couple of small restrictions
 on the programs that can be specified to ensure that they constitute valid target programs, namely:
@@ -71,11 +71,11 @@ Calling BOPP is super simple, just call
 `(doopt algorithm opt-query opt-query-args num-samples args)`
 
 where
-- `algorithm` = Inference algorithm used for estimating the marginal [:smc, :pcascade, :importance]
+- `algorithm` = Inference algorithm used for estimating the marginal [`:smc`, `:pcascade`, `:importance`]
 - `opt-query` = Query to be optimized, defined by defopt.
 - `opt-query-args` = Fixed inputs of opt-query-args (y in earlier example)
 - `num-samples` = Number of samples for constructing the estimator of the marginal.
-- `args` = Optional arguments as key-value pairs.  See docstring for doopt.
+- `args` = Optional arguments as key-value pairs.  See docstring for `doopt`.
 
 This returns a lazy infinite sequence of samples.  Call `take` on this will convert it
 to a fixed number of outputs.  Note that as BOPP is a GP based BO scheme, scaling in N is quite poor
