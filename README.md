@@ -88,6 +88,10 @@ Though BOPP currently runs of a snapshot of Anglican that means you don't need t
 explicitly, is does have the same requirements in terms of java, Leiningen etc  and so we refer the reader to http://www.robots.ox.ac.uk/~fwood/anglican/usage/index.html and recommend that users follow section 2 in the user start up guide.  We also recommend that you familiarize yourself on the syntax of Anglican through the
 provided link, as this is the same syntax as Anglican, with the addition of the forms `defopt` and `doopt`.
 
+
+*Temporary*
+At present you also need to download [Deodorant](http://github.com/probprog/deodorant) manually and do a lein install.  We will update this very soon so that its taken straight from clojars.
+
 ## License ##
 
 Copyright © Tom Rainforth, Tuan Anh Le, Jan-Willem van de Meent and Frank Wood
