@@ -1,6 +1,6 @@
 # BOPP: Bayesian Optimization for Probabilistic Programs
 
-- Depedencies: [Deodorant](http://github.com/twgr/deodorant) and a temporary snapshot [Anglican](https://clojars.org/org.clojars.tuananhle/anglican) (this will be switched to generic depedency on Anglican once the corresponding pull request is processed)
+- Depedencies: [Deodorant](http://github.com/probprog/deodorant) and a temporary snapshot [Anglican](https://clojars.org/org.clojars.tuananhle/anglican) (this will be switched to generic depedency on Anglican once the corresponding pull request is processed)
 - This is still a working version and is different to the code used for the paper.  We have made so people can use it during the conference, but intend to keep working on it through the conference and after.
 
 
@@ -14,7 +14,7 @@ unbounded optimization, and implicit constraint satisfaction including equality 
 The key idea is to use a series of code transformations to extract from the original program
 all the things that are needed to carry out the MMAP problem, such as the target function itself
 and a program for optimizing the acquisition function subject to the implicit constraints.  These
-are then passed to our other package [Deodorant](http://github.com/twgr/deodorant), which uses
+are then passed to our other package [Deodorant](http://github.com/probprog/deodorant), which uses
 these to solve the problem probabilistic programs creates for BO.  The following paper should
 be referred to for full algorithmic details and we ask that you cite this paper if you
 use BOPP in your work.
