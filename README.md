@@ -2,6 +2,7 @@
 
 - Last Bitbucket commit before this repo: [43930ea4cb08026b1d050a496262e8a6e923ce85](https://bitbucket.org/tuananhle/bopp/commits/43930ea4cb08026b1d050a496262e8a6e923ce85).
 - Depedencies: [Deodorant](http://github.com/twgr/deodorant) and a temporary snapshot [Anglican](https://clojars.org/org.clojars.tuananhle/anglican) (this will be switched to generic depedency on Anglican once the corresponding pull request is processed)
+- This is still a working version and is different to the code used for the paper.  We have made so people can use it during the conference, but intend to keep working on it through the conference and after.
 
 
 BOPP us a package for automated marginal maximum a posteriori inference (MMAP) based around the
