@@ -29,22 +29,24 @@ BOPP targets are specified using the macro defopt.  This is identical to defquer
 BOPP will optimize the evidence of the program with respect to thse variables, whilst marginalizing out over the others.
 For example:
 
+```lisp
 (defopt simple-bimodal [y] [theta]
   (let [x (sample (normal 0 1))
   		theta (sample (normal x 0.5))]
     (observe
      (normal (sqrt (* theta theta)) 0.5) y)))
+  ```
 
 specifies a model where we wish to optimize theta, marginalizing out x.  
 
 There are a couple of small restrictions
 on the programs that can be specified to ensure that they constitute valid target programs, namely:
 
-1. Each target variable @@\phi\_k \in \theta@@ must be bound to a value directly by a sample statement with fixed measure-type distribution argument (i.e. not a weird defdist distribution object).
+1. Each target variable must be bound to a value directly by a sample statement with fixed measure-type distribution argument (i.e. not a weird defdist distribution object).
 
-2. The program must be written such that any possible execution trace binds each optimization variable @@\phi\_k@@ exactly once.
+2. The program must be written such that any possible execution trace binds each optimization variable exactly once.
 
-3. Although any @@\phi\_k@@ may be lexically multiply bound, it must have the same base measure in all possible execution traces.
+3. Although any target variable may be lexically multiply bound, it must have the same base measure in all possible execution traces.
 
 Don't worry, if this doesn't make too much sense, BOPP catches violations of these automatically and gives you
 and error telling you what you violated. Please see the [paper](http://papers.nips.cc/paper/6421-bayesian-optimization-for-probabilistic-programs) and [supplementary material](http://www.robots.ox.ac.uk/~twgr/assets/pdf/rainforth2016BOPP.pdf) for more information.
