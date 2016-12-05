@@ -10,7 +10,7 @@
            [anglican.ais]
            [anglican.importance]))
 
-(defn get-result-vector [sample]
+(defn- get-result-vector [sample]
   (into [] (get-result sample)))
 
 (defmacro opt [& args]
@@ -52,7 +52,7 @@
     `(def ~(with-meta name {:doc docstring})
        (opt ~@source))))
 
-(defn bo-target
+(defn- bo-target
   "Calculates the value of a the BO target given a marginal query and a
    point to evaluate.  Target will typically be the log-marginal for
    MMAP problems and (- (log-marginal samples)) for risk minimization.
