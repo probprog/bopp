@@ -39,8 +39,7 @@ Rainforth, T., Le, T. A., van de Meent, J.-W., Osborne, M. A., & Wood, F. (2016)
 
 ### Defining target programs ###
 
-BOPP targets are specified using the macro `defopt`.  This is identical to `defquery` in [Anglican](http://www.robots.ox.ac.uk/~fwood/anglican) except that it takes as an extra input of the target variables to be optimized.  
-BOPP will optimize the evidence of the program with respect to the variables, whilst marginalizing out over the others.
+BOPP targets are specified using the macro `defopt`.  This is identical to `defquery` in [Anglican](http://www.robots.ox.ac.uk/~fwood/anglican) except that it takes as an extra input of the target variables to be optimized. BOPP will optimize the evidence of the program with respect to the variables, whilst marginalizing out over the others.
 For example:
 
 ```lisp
