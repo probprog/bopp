@@ -26,7 +26,7 @@
   (observe* [this value] value))
 ;; @@
 ;; =>
-;;; {"type":"html","content":"<span class='clj-unkown'>#multifn[print-method 0x27933958]</span>","value":"#multifn[print-method 0x27933958]"}
+;;; {"type":"html","content":"<span class='clj-unkown'>#multifn[print-method 0x20e0be40]</span>","value":"#multifn[print-method 0x20e0be40]"}
 ;; <=
 
 ;; **
@@ -39,6 +39,10 @@
 ;;; Bounds @@-5 \le x\_1 \le 10@@ and @@0 \le x\_2 \le 15@@.
 ;;; 
 ;;; There are three global minimum, @@f(x^\*) = 0.397887@@ at @@x^\* = (-\pi,12,1275), (\pi,2.275) ~\rm{and}~ (9.42478,2.475)@@.
+;; **
+
+;; **
+;;; First lets define the problem.
 ;; **
 
 ;; @@
@@ -60,63 +64,20 @@
 ;;; {"type":"html","content":"<span class='clj-var'>#&#x27;worksheets.opt/branin-opt</span>","value":"#'worksheets.opt/branin-opt"}
 ;; <=
 
+;; **
+;;; Now we can run BOPP in a single simple call and collect the results.  Note performance is likely to be worse than the paper as we are using the default lightweight options setup rather than the more careful one from the paper.
+;; **
+
 ;; @@
-(def branin-samples (->> (doopt :importance branin-opt [] 1 :bo-options {:verbose true})
-                		 (take 50) ;; Number of optimization iterations to do
+(def branin-samples (->> (doopt :importance branin-opt [] 1 :bo-options {:verbose true :b-deterministic true})
+                		 (take 100) ;; Number of optimization iterations to do
                 		 doall
                 		 (mapv #(take 2 %))))
 ;; @@
-;; ->
-;;; :initial-thetas [[-3.793932187108111 4.95087634462598] [-0.21853856501694713 8.03366707915622] [2.3634544645354287 5.775270545231232] [2.9647360458253846 10.096026043663473] [3.899983271831735 14.627279346693625]]
-;;; :initial-log-Zs [-82.41522427305625 -22.19506262585381 -11.086581355853344 -59.51566008695524 -168.65127332062266]
-;;; :BO-Iteration 0
-;;; :n-gps-in-acq-function 20
-;;; :acq-opt [0.11617931247633569]
-;;; :theta-best [2.3634544645354287 5.775270545231232]     :log-Z-theta-best -11.086581355853344     :mean-theta-best -11.095367896581308     :std-dev-theta-best 0.6674155200461411     :i-best 2
-;;; :theta-next [1.7482032213544114 7.1027203658319324]
-;;; Calling original query with theta next  
-;;; :log-Z-theta-next -20.487332027288623
-;;; :log-Z-i-best -11.086581355853344
-;;; :theta-mean-best ([2.3634544645354287 5.775270545231232] -11.095367896581308)
-;;; :BO-Iteration 1
-;;; :n-gps-in-acq-function 20
-;;; :acq-opt [0.05967694301634994]
-;;; :theta-best [2.3634544645354287 5.775270545231232]     :log-Z-theta-best -11.086581355853344     :mean-theta-best -11.096611631764716     :std-dev-theta-best 0.3775621817919005     :i-best 3
-;;; :theta-next [4.254583958653293 4.56692785346628]
-;;; Calling original query with theta next  
-;;; :log-Z-theta-next -14.755318850543087
-;;; :log-Z-i-best -11.086581355853344
-;;; :theta-mean-best ([2.3634544645354287 5.775270545231232] -11.096611631764716)
-;;; :BO-Iteration 2
-;;; :n-gps-in-acq-function 20
-;;; :acq-opt [0.08057700135500676]
-;;; :theta-best [2.3634544645354287 5.775270545231232]     :log-Z-theta-best -11.086581355853344     :mean-theta-best -11.5654758366708     :std-dev-theta-best 4.067199680893291     :i-best 4
-;;; :theta-next [3.218340263717427 4.856522781795318]
-;;; Calling original query with theta next  
-;;; :log-Z-theta-next -7.398995947616045
-;;; :log-Z-i-best -11.086581355853344
-;;; :theta-mean-best ([2.3634544645354287 5.775270545231232] -11.5654758366708)
-;;; :BO-Iteration 3
-;;; :n-gps-in-acq-function 20
-;;; :acq-opt [0.04817424879307838]
-;;; :theta-best [3.218340263717427 4.856522781795318]     :log-Z-theta-best -7.398995947616045     :mean-theta-best -7.4828549862019145     :std-dev-theta-best 3.6038229971496283     :i-best 0
-;;; :theta-next [1.1071721967128694 3.585266947980962]
-;;; Calling original query with theta next  
-;;; :log-Z-theta-next -14.951669345088717
-;;; :log-Z-i-best -7.398995947616045
-;;; :theta-mean-best ([3.218340263717427 4.856522781795318] -7.4828549862019145)
-;;; 
-;; <-
-;; =>
-;;; {"type":"html","content":"<span class='clj-var'>#&#x27;worksheets.opt/branin-samples</span>","value":"#'worksheets.opt/branin-samples"}
-;; <=
 
 ;; @@
 branin-samples
 ;; @@
-;; =>
-;;; {"type":"list-like","open":"<span class='clj-vector'>[</span>","close":"<span class='clj-vector'>]</span>","separator":" ","items":[{"type":"list-like","open":"<span class='clj-lazy-seq'>(</span>","close":"<span class='clj-lazy-seq'>)</span>","separator":" ","items":[{"type":"list-like","open":"<span class='clj-vector'>[</span>","close":"<span class='clj-vector'>]</span>","separator":" ","items":[{"type":"html","content":"<span class='clj-double'>2.3634544645354287</span>","value":"2.3634544645354287"},{"type":"html","content":"<span class='clj-double'>5.775270545231232</span>","value":"5.775270545231232"}],"value":"[2.3634544645354287 5.775270545231232]"},{"type":"html","content":"<span class='clj-double'>-11.095367896581308</span>","value":"-11.095367896581308"}],"value":"([2.3634544645354287 5.775270545231232] -11.095367896581308)"},{"type":"list-like","open":"<span class='clj-lazy-seq'>(</span>","close":"<span class='clj-lazy-seq'>)</span>","separator":" ","items":[{"type":"list-like","open":"<span class='clj-vector'>[</span>","close":"<span class='clj-vector'>]</span>","separator":" ","items":[{"type":"html","content":"<span class='clj-double'>2.3634544645354287</span>","value":"2.3634544645354287"},{"type":"html","content":"<span class='clj-double'>5.775270545231232</span>","value":"5.775270545231232"}],"value":"[2.3634544645354287 5.775270545231232]"},{"type":"html","content":"<span class='clj-double'>-11.096611631764716</span>","value":"-11.096611631764716"}],"value":"([2.3634544645354287 5.775270545231232] -11.096611631764716)"},{"type":"list-like","open":"<span class='clj-lazy-seq'>(</span>","close":"<span class='clj-lazy-seq'>)</span>","separator":" ","items":[{"type":"list-like","open":"<span class='clj-vector'>[</span>","close":"<span class='clj-vector'>]</span>","separator":" ","items":[{"type":"html","content":"<span class='clj-double'>2.3634544645354287</span>","value":"2.3634544645354287"},{"type":"html","content":"<span class='clj-double'>5.775270545231232</span>","value":"5.775270545231232"}],"value":"[2.3634544645354287 5.775270545231232]"},{"type":"html","content":"<span class='clj-double'>-11.5654758366708</span>","value":"-11.5654758366708"}],"value":"([2.3634544645354287 5.775270545231232] -11.5654758366708)"},{"type":"list-like","open":"<span class='clj-lazy-seq'>(</span>","close":"<span class='clj-lazy-seq'>)</span>","separator":" ","items":[{"type":"list-like","open":"<span class='clj-vector'>[</span>","close":"<span class='clj-vector'>]</span>","separator":" ","items":[{"type":"html","content":"<span class='clj-double'>3.218340263717427</span>","value":"3.218340263717427"},{"type":"html","content":"<span class='clj-double'>4.856522781795318</span>","value":"4.856522781795318"}],"value":"[3.218340263717427 4.856522781795318]"},{"type":"html","content":"<span class='clj-double'>-7.4828549862019145</span>","value":"-7.4828549862019145"}],"value":"([3.218340263717427 4.856522781795318] -7.4828549862019145)"}],"value":"[([2.3634544645354287 5.775270545231232] -11.095367896581308) ([2.3634544645354287 5.775270545231232] -11.096611631764716) ([2.3634544645354287 5.775270545231232] -11.5654758366708) ([3.218340263717427 4.856522781795318] -7.4828549862019145)]"}
-;; <=
 
 ;; **
 ;;; ## Hartmann 6D
@@ -167,7 +128,7 @@ branin-samples
 (def alpha
   [1 1.2 3 3.2])
 
-(defn hartman-6d [x1 x2 x3 x4 x5 x6]
+(defn hartmann-6d [x1 x2 x3 x4 x5 x6]
   (let [x [x1 x2 x3 x4 x5 x6]
         dxP (mat/pow
              (mat/sub P x)
@@ -181,23 +142,34 @@ branin-samples
              (reduce + (mat/mul alpha exp-terms)))]
     (- f)))
 
-(with-primitive-procedures [factor hartman-6d]
- (defopt h6 [] [x1 x2 x3 x4 x5 x6]
+(with-primitive-procedures [factor hartmann-6d]
+ (defopt hartmann-opt [] [x1 x2 x3 x4 x5 x6]
    (let [x1 (sample (uniform-continuous 0 1))
          x2 (sample (uniform-continuous 0 1))
          x3 (sample (uniform-continuous 0 1))
          x4 (sample (uniform-continuous 0 1))
          x5 (sample (uniform-continuous 0 1))
          x6 (sample (uniform-continuous 0 1))
-         f (hartman-6d x1 x2 x3 x4 x5 x6)
+         f (hartmann-6d x1 x2 x3 x4 x5 x6)
          prior-correction 0]
      (observe (factor)
               (+ f prior-correction)))))
 ;; @@
 ;; =>
-;;; {"type":"html","content":"<span class='clj-var'>#&#x27;worksheets.opt/h6</span>","value":"#'worksheets.opt/h6"}
+;;; {"type":"html","content":"<span class='clj-var'>#&#x27;worksheets.opt/hartmann-opt</span>","value":"#'worksheets.opt/hartmann-opt"}
 ;; <=
 
+;; **
+;;; Again its a simple call to use BOPP.
+;; **
+
+;; @@
+(def hartmann6d-samples (->> (doopt :importance hartmann-opt [] 1 :bo-options {:verbose true :b-deterministic true})
+                		 (take 100) ;; Number of optimization iterations to do
+                		 doall
+                		 (mapv #(take 2 %))))
 ;; @@
 
+;; @@
+hartmann6d-samples
 ;; @@

@@ -172,62 +172,15 @@
                          hmm-simple-opt
                          []
                          200 ;; Number of particles
-                         :bo-options {:verbose true}) ;; So that BOPP spits out some information to follow its progress
-                (take 50) ;; Number of optimization iterations to do
+                         :bo-options {:verbose true})
+                (take 100) ;; Number of optimization iterations to do
                 doall
                 (mapv #(take 2 %))))
 ;; @@
-;; ->
-;;; :initial-thetas [[2 0.38365382681266014 0.4823430869201011 0.4086743943587312 0.608895907898424 0.6409658550809814] [5 0.03449142841949904 0.8045265641381949 0.5387556639684521 0.49389524928254125 0.3738873607520308] [3 0.8404384066870714 0.352178964968338 0.6369563210635534 0.7453552843779148 0.6931280395832291] [2 0.8206756712957628 0.017563110547761163 0.34978755780360826 0.4229099463109336 0.512254896542613] [3 0.4765634418787814 0.31581873014572337 0.9291668739422139 0.7101523845173159 0.6699824433495594]]
-;;; :initial-log-Zs [-51928.50503927859 -51427.89603971816 -116985.61563774954 -103473.76425664629 -22107.542312660145]
-;;; :BO-Iteration 0
-;;; :n-gps-in-acq-function 20
-;;; :acq-opt [0.02450445789016542]
-;;; :theta-best [3 0.4765634418787814 0.31581873014572337 0.9291668739422139 0.7101523845173159 0.6699824433495594]     :log-Z-theta-best -22107.542312660145     :mean-theta-best -22369.775924801885     :std-dev-theta-best 2339.919702536459     :i-best 4
-;;; :theta-next [3 0.12593448768732027 0.4050690937553105 0.8136403627433 0.6471216405525084 0.776727666950777]
-;;; Calling original query with theta next  
-;;; :log-Z-theta-next -25083.89993128104
-;;; :log-Z-i-best -22107.542312660145
-;;; :theta-mean-best ([3 0.4765634418787814 0.31581873014572337 0.9291668739422139 0.7101523845173159 0.6699824433495594] -22369.775924801885)
-;;; :BO-Iteration 1
-;;; :n-gps-in-acq-function 20
-;;; :acq-opt [0.05599812569770439]
-;;; :theta-best [3 0.4765634418787814 0.31581873014572337 0.9291668739422139 0.7101523845173159 0.6699824433495594]     :log-Z-theta-best -22107.542312660145     :mean-theta-best -22276.725984139674     :std-dev-theta-best 1474.4705129100885     :i-best 5
-;;; :theta-next [3 0.4412012231020639 0.29840084655229204 0.8131458170575449 0.6264601647735567 0.7019277347625381]
-;;; Calling original query with theta next  
-;;; :log-Z-theta-next -50813.12216720674
-;;; :log-Z-i-best -22107.542312660145
-;;; :theta-mean-best ([3 0.4765634418787814 0.31581873014572337 0.9291668739422139 0.7101523845173159 0.6699824433495594] -22276.725984139674)
-;;; :BO-Iteration 2
-;;; :n-gps-in-acq-function 20
-;;; :acq-opt [0.023545904771284605]
-;;; :theta-best [3 0.4765634418787814 0.31581873014572337 0.9291668739422139 0.7101523845173159 0.6699824433495594]     :log-Z-theta-best -22107.542312660145     :mean-theta-best -22107.687852866744     :std-dev-theta-best 49.11475680910615     :i-best 6
-;;; :theta-next [1 0.4690458668069968 0.5154632316910503 0.6626988804118085 0.7589733086072618 0.7842030637829932]
-;;; Calling original query with theta next  
-;;; :log-Z-theta-next -27148.236208382405
-;;; :log-Z-i-best -22107.542312660145
-;;; :theta-mean-best ([3 0.4765634418787814 0.31581873014572337 0.9291668739422139 0.7101523845173159 0.6699824433495594] -22107.687852866744)
-;;; :BO-Iteration 3
-;;; :n-gps-in-acq-function 20
-;;; :acq-opt [0.03712842450428576]
-;;; :theta-best [3 0.4765634418787814 0.31581873014572337 0.9291668739422139 0.7101523845173159 0.6699824433495594]     :log-Z-theta-best -22107.542312660145     :mean-theta-best -22366.528599528843     :std-dev-theta-best 1978.858489557478     :i-best 7
-;;; :theta-next [2 0.44759800890789925 0.37252482228192596 0.8729057718488862 0.6708578513387761 0.7965583070599128]
-;;; Calling original query with theta next  
-;;; :log-Z-theta-next -30586.239835756063
-;;; :log-Z-i-best -22107.542312660145
-;;; :theta-mean-best ([3 0.4765634418787814 0.31581873014572337 0.9291668739422139 0.7101523845173159 0.6699824433495594] -22366.528599528843)
-;;; 
-;; <-
-;; =>
-;;; {"type":"html","content":"<span class='clj-var'>#&#x27;worksheets.hmm/samples</span>","value":"#'worksheets.hmm/samples"}
-;; <=
 
 ;; @@
 samples
 ;; @@
-;; =>
-;;; {"type":"list-like","open":"<span class='clj-vector'>[</span>","close":"<span class='clj-vector'>]</span>","separator":" ","items":[{"type":"list-like","open":"<span class='clj-lazy-seq'>(</span>","close":"<span class='clj-lazy-seq'>)</span>","separator":" ","items":[{"type":"list-like","open":"<span class='clj-vector'>[</span>","close":"<span class='clj-vector'>]</span>","separator":" ","items":[{"type":"html","content":"<span class='clj-unkown'>3</span>","value":"3"},{"type":"html","content":"<span class='clj-double'>0.4765634418787814</span>","value":"0.4765634418787814"},{"type":"html","content":"<span class='clj-double'>0.31581873014572337</span>","value":"0.31581873014572337"},{"type":"html","content":"<span class='clj-double'>0.9291668739422139</span>","value":"0.9291668739422139"},{"type":"html","content":"<span class='clj-double'>0.7101523845173159</span>","value":"0.7101523845173159"},{"type":"html","content":"<span class='clj-double'>0.6699824433495594</span>","value":"0.6699824433495594"}],"value":"[3 0.4765634418787814 0.31581873014572337 0.9291668739422139 0.7101523845173159 0.6699824433495594]"},{"type":"html","content":"<span class='clj-double'>-22369.775924801885</span>","value":"-22369.775924801885"}],"value":"([3 0.4765634418787814 0.31581873014572337 0.9291668739422139 0.7101523845173159 0.6699824433495594] -22369.775924801885)"},{"type":"list-like","open":"<span class='clj-lazy-seq'>(</span>","close":"<span class='clj-lazy-seq'>)</span>","separator":" ","items":[{"type":"list-like","open":"<span class='clj-vector'>[</span>","close":"<span class='clj-vector'>]</span>","separator":" ","items":[{"type":"html","content":"<span class='clj-unkown'>3</span>","value":"3"},{"type":"html","content":"<span class='clj-double'>0.4765634418787814</span>","value":"0.4765634418787814"},{"type":"html","content":"<span class='clj-double'>0.31581873014572337</span>","value":"0.31581873014572337"},{"type":"html","content":"<span class='clj-double'>0.9291668739422139</span>","value":"0.9291668739422139"},{"type":"html","content":"<span class='clj-double'>0.7101523845173159</span>","value":"0.7101523845173159"},{"type":"html","content":"<span class='clj-double'>0.6699824433495594</span>","value":"0.6699824433495594"}],"value":"[3 0.4765634418787814 0.31581873014572337 0.9291668739422139 0.7101523845173159 0.6699824433495594]"},{"type":"html","content":"<span class='clj-double'>-22276.725984139674</span>","value":"-22276.725984139674"}],"value":"([3 0.4765634418787814 0.31581873014572337 0.9291668739422139 0.7101523845173159 0.6699824433495594] -22276.725984139674)"},{"type":"list-like","open":"<span class='clj-lazy-seq'>(</span>","close":"<span class='clj-lazy-seq'>)</span>","separator":" ","items":[{"type":"list-like","open":"<span class='clj-vector'>[</span>","close":"<span class='clj-vector'>]</span>","separator":" ","items":[{"type":"html","content":"<span class='clj-unkown'>3</span>","value":"3"},{"type":"html","content":"<span class='clj-double'>0.4765634418787814</span>","value":"0.4765634418787814"},{"type":"html","content":"<span class='clj-double'>0.31581873014572337</span>","value":"0.31581873014572337"},{"type":"html","content":"<span class='clj-double'>0.9291668739422139</span>","value":"0.9291668739422139"},{"type":"html","content":"<span class='clj-double'>0.7101523845173159</span>","value":"0.7101523845173159"},{"type":"html","content":"<span class='clj-double'>0.6699824433495594</span>","value":"0.6699824433495594"}],"value":"[3 0.4765634418787814 0.31581873014572337 0.9291668739422139 0.7101523845173159 0.6699824433495594]"},{"type":"html","content":"<span class='clj-double'>-22107.687852866744</span>","value":"-22107.687852866744"}],"value":"([3 0.4765634418787814 0.31581873014572337 0.9291668739422139 0.7101523845173159 0.6699824433495594] -22107.687852866744)"},{"type":"list-like","open":"<span class='clj-lazy-seq'>(</span>","close":"<span class='clj-lazy-seq'>)</span>","separator":" ","items":[{"type":"list-like","open":"<span class='clj-vector'>[</span>","close":"<span class='clj-vector'>]</span>","separator":" ","items":[{"type":"html","content":"<span class='clj-unkown'>3</span>","value":"3"},{"type":"html","content":"<span class='clj-double'>0.4765634418787814</span>","value":"0.4765634418787814"},{"type":"html","content":"<span class='clj-double'>0.31581873014572337</span>","value":"0.31581873014572337"},{"type":"html","content":"<span class='clj-double'>0.9291668739422139</span>","value":"0.9291668739422139"},{"type":"html","content":"<span class='clj-double'>0.7101523845173159</span>","value":"0.7101523845173159"},{"type":"html","content":"<span class='clj-double'>0.6699824433495594</span>","value":"0.6699824433495594"}],"value":"[3 0.4765634418787814 0.31581873014572337 0.9291668739422139 0.7101523845173159 0.6699824433495594]"},{"type":"html","content":"<span class='clj-double'>-22366.528599528843</span>","value":"-22366.528599528843"}],"value":"([3 0.4765634418787814 0.31581873014572337 0.9291668739422139 0.7101523845173159 0.6699824433495594] -22366.528599528843)"}],"value":"[([3 0.4765634418787814 0.31581873014572337 0.9291668739422139 0.7101523845173159 0.6699824433495594] -22369.775924801885) ([3 0.4765634418787814 0.31581873014572337 0.9291668739422139 0.7101523845173159 0.6699824433495594] -22276.725984139674) ([3 0.4765634418787814 0.31581873014572337 0.9291668739422139 0.7101523845173159 0.6699824433495594] -22107.687852866744) ([3 0.4765634418787814 0.31581873014572337 0.9291668739422139 0.7101523845173159 0.6699824433495594] -22366.528599528843)]"}
-;; <=
 
 ;; @@
 
