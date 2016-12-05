@@ -308,4 +308,4 @@
                     :debug-folder bo-debug-folder
                     :plot-aq bo-plot-aq}
         bo-options (flatten (into [] (filter second bo-options)))]
-    (apply bo/bopp-bo f aq-optimizer theta-sampler bo-options)))
+    (apply bo/deodorant f aq-optimizer theta-sampler bo-options)))
