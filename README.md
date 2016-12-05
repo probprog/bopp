@@ -56,9 +56,7 @@ There are a couple of small restrictions
 on the programs that can be specified to ensure that they constitute valid target programs, namely:
 
 1. Each target variable must be bound to a value directly by a sample statement with fixed measure-type distribution argument (i.e. not a weird `defdist` distribution object).
-
 2. The program must be written such that any possible execution trace binds each optimization variable exactly once.
-
 3. Although any target variable may be lexically multiply bound, it must have the same base measure in all possible execution traces.
 
 Don't worry, if this doesn't make too much sense, BOPP catches violations of these automatically and gives you
