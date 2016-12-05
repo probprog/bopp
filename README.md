@@ -77,7 +77,7 @@ where
 - `num-samples` = Number of samples for constructing the estimator of the marginal.
 - `args` = Optional arguments as key-value pairs.  See docstring for doopt.
 
-This returns a lazy infinite sequence of samples.  Call (take N .) on this will convert it
+This returns a lazy infinite sequence of samples.  Call `take` on this will convert it
 to a fixed number of outputs.  Note that as BOPP is a GP based BO scheme, scaling in N is quite poor
 and practically limited to around 400-500.
 
