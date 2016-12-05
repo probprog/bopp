@@ -24,7 +24,12 @@
        {:source '(~'opt ~@args)})))
 
 (defmacro defopt
-  "Binds variable to a BOPP query. Example:
+  "Binds variable to a BOPP query. Synatx is the
+   same as Anglican's defquery, except that an
+   additional input is specified to dictate the
+   variables to be optimized.
+
+  Example:
 
   (defopt opt-query
      <docstring>
@@ -35,7 +40,10 @@
        (observe (normal (* a theta) (* b b)) y)
        [a b]))
 
-  "
+
+  For more details please see the README and the
+  paper.  https://github.com/twgr/bopp/blob/master/README.md
+  http://papers.nips.cc/paper/6421-bayesian-optimization-for-probabilistic-programs"
   [name & args]
   (let [[docstring source]
         (if (string? (first args))
@@ -122,7 +130,12 @@
     best-output))
 
 (defn doopt
-  "<Generic doc text>
+  "Calls BOPP on a target query as defined by defopt, returning a lazy
+   infinite sequence of increasingly optimal estimates.
+
+  For more details please see the README and the
+  paper.  https://github.com/twgr/bopp/blob/master/README.md
+  http://papers.nips.cc/paper/6421-bayesian-optimization-for-probabilistic-programs
 
   Input:
     algorithm ... Inference algorithm
@@ -180,7 +193,7 @@
         (Default: nil; Suggested: anglican.inference/log-marginal)
       opt-bo-target-transformation ... Custom BO target transformation for
         optimization. Takes in BO target, outputs alternative target.
-        (Default: nil; Suggested: identity)
+        (Default: nil; Suggested: identity, - for minimization)
 
     Inference options:
       num-particles ... Number of particles during inference.
