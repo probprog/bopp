@@ -106,7 +106,7 @@
                           value))))
 ;; @@
 ;; =>
-;;; {"type":"html","content":"<span class='clj-unkown'>#multifn[print-method 0x75b3a7c5]</span>","value":"#multifn[print-method 0x75b3a7c5]"}
+;;; {"type":"html","content":"<span class='clj-unkown'>#multifn[print-method 0x2fb45f6e]</span>","value":"#multifn[print-method 0x2fb45f6e]"}
 ;; <=
 
 ;; **
@@ -148,7 +148,7 @@
 (def samples (->> (doopt :smc 
                          kalman-chaos-opt
                          [observations]
-                         500 ;; Number of particles
+                         50 ;; Number of particles
                          :bo-verbose true) ;; So that BOPP spits out some information to follow its progress
                 (take 4) ;; Number of optimization iterations to do
                 doall

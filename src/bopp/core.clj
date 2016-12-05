@@ -227,7 +227,7 @@
          opt-type :mmap
 
          ;; Default acquisition optimization/AIS options
-         acq-opt-num-starts 16
+         acq-opt-num-starts 4 ;16
          ais-num-steps nil
          ais-start-exponent 0.001
          ais-end-exponent 10
