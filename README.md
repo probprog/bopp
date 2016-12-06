@@ -1,7 +1,6 @@
 # BOPP: Bayesian Optimization for Probabilistic Programs
 
-- Depedencies: [Deodorant](http://github.com/probprog/deodorant) and a temporary snapshot [Anglican](https://clojars.org/org.clojars.tuananhle/anglican) (this will be switched to generic dependency on Anglican once the corresponding pull request is processed)
-- This is still a working version and is different to the code used for the paper.  We have made so people can use it during the conference, but intend to keep working on it through the conference and after.
+See our [NIPS Spotlight video](https://www.youtube.com/watch?v=gVzV-NxKa9U) for TLDR.
 
 BOPP is a package for automated marginal maximum a posteriori inference (MMAP) based around the
 probabilistic programming system [Anglican](http://www.robots.ox.ac.uk/~fwood/anglican).  The
@@ -14,8 +13,8 @@ The key idea is to use a series of code transformations to extract from the orig
 all the things that are needed to carry out the MMAP problem, such as the target function itself
 and a program for optimizing the acquisition function subject to the implicit constraints.  These
 are then passed to our other package [Deodorant](http://github.com/probprog/deodorant), which uses
-these to solve the problem probabilistic programs creates for BO.  The following paper should
-be referred to for full algorithmic details and we ask that you cite this paper if you
+these to solve the problem probabilistic programs creates for BO.
+The following paper should be referred to for full algorithmic details and we ask that you cite this paper if you
 use BOPP in your work.
 
 Rainforth, T., Le, T. A., van de Meent, J.-W., Osborne, M. A., & Wood, F. (2016). Bayesian Optimization for Probabilistic Programs. In Advances in Neural Information Processing Systems.
@@ -32,6 +31,27 @@ Rainforth, T., Le, T. A., van de Meent, J.-W., Osborne, M. A., & Wood, F. (2016)
     url = {http://papers.nips.cc/paper/6421-bayesian-optimization-for-probabilistic-programs.pdf}
 }
 ```
+
+## Installation ##
+
+To use BOPP in your own [Leiningen](http://leiningen.org/) projects, just include the dependency in your `project.clj`:
+```
+(defproject foo
+  ...
+  :dependencies [...
+                 [bopp "0.1.0"]
+                 ...])
+```
+
+In your Clojure files, remember to require functions from `core.clj`, e.g.:
+```
+(ns bar
+  (require [bopp.core :refer :all]))
+```
+The full documentation can be found [here](https://probprog.github.io/bopp/). Checkout [core/defopt](https://probprog.github.io/bopp/bopp.core.html#var-defopt) and [core/doopt](https://probprog.github.io/bopp/bopp.core.html#var-doopt) in particular.
+
+Though BOPP currently runs of a snapshot of Anglican that means you don't need to install Anglican explicitly, is does have the same requirements in terms of java, Leiningen etc  and so we refer the reader to http://www.robots.ox.ac.uk/~fwood/anglican/usage/index.html and recommend that users follow section 2 in the user start up guide.  We also recommend that you familiarize yourself on the syntax of Anglican through the
+provided link, as this is the same syntax as Anglican, with the addition of the forms `defopt` and `doopt`.
 
 ## Usage ##
 
@@ -81,26 +101,7 @@ and practically limited to around 400-500.
 A number of worksheets are provided to give example usage in different cases.  These can be accessed in a Gorilla REPL by running
 `lein gorilla` from the base folder and going through worksheets in the `worksheets/` folder.
 
-## Installation ##
-
-To use BOPP in your own [Leiningen](http://leiningen.org/) projects, just include the dependency in your `project.clj`:
-```
-(defproject foo
-  ...
-  :dependencies [...
-                 [bopp "0.1.0"]
-                 ...])
-```
-
-In your Clojure files, remember to require functions from `core.clj`, e.g.:
-```
-(ns bar
-  (require [bopp.core :refer :all]))
-```
-The full documentation can be found [here](https://probprog.github.io/bopp/). Checkout [core/defopt](https://probprog.github.io/bopp/bopp.core.html#var-defopt) and [core/doopt](https://probprog.github.io/bopp/bopp.core.html#var-doopt) in particular.
-
-Though BOPP currently runs of a snapshot of Anglican that means you don't need to install Anglican explicitly, is does have the same requirements in terms of java, Leiningen etc  and so we refer the reader to http://www.robots.ox.ac.uk/~fwood/anglican/usage/index.html and recommend that users follow section 2 in the user start up guide.  We also recommend that you familiarize yourself on the syntax of Anglican through the
-provided link, as this is the same syntax as Anglican, with the addition of the forms `defopt` and `doopt`.
+This is still a working version and is different to the code used for the paper.  We have made so people can use it during the conference, but intend to keep working on it through the conference and after. Note also, that the examples are set to run with a `:fast` option.
 
 ## License ##
 
