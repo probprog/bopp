@@ -1,8 +1,7 @@
 # BOPP: Bayesian Optimization for Probabilistic Programs
 
-- Depedencies: [Deodorant](http://github.com/probprog/deodorant) and a temporary snapshot [Anglican](https://clojars.org/org.clojars.tuananhle/anglican) (this will be switched to generic depedency on Anglican once the corresponding pull request is processed)
+- Depedencies: [Deodorant](http://github.com/probprog/deodorant) and a temporary snapshot [Anglican](https://clojars.org/org.clojars.tuananhle/anglican) (this will be switched to generic dependency on Anglican once the corresponding pull request is processed)
 - This is still a working version and is different to the code used for the paper.  We have made so people can use it during the conference, but intend to keep working on it through the conference and after.
-
 
 BOPP is a package for automated marginal maximum a posteriori inference (MMAP) based around the
 probabilistic programming system [Anglican](http://www.robots.ox.ac.uk/~fwood/anglican).  The
@@ -80,17 +79,27 @@ and practically limited to around 400-500.
 ### Examples ###
 
 A number of worksheets are provided to give example usage in different cases.  These can be accessed in a Gorilla REPL by running
-`lein gorilla` from the base folder and opening worksheets in the `worksheets/` folder.
+`lein gorilla` from the base folder and going through worksheets in the `worksheets/` folder.
 
 ## Installation ##
 
-Though BOPP currently runs of a snapshot of Anglican that means you don't need to install Anglican
-explicitly, is does have the same requirements in terms of java, Leiningen etc  and so we refer the reader to http://www.robots.ox.ac.uk/~fwood/anglican/usage/index.html and recommend that users follow section 2 in the user start up guide.  We also recommend that you familiarize yourself on the syntax of Anglican through the
+To use BOPP in your own [Leiningen](http://leiningen.org/) projects, just include the dependency in your `project.clj`:
+```
+(defproject foo
+  ...
+  :dependencies [...
+                 [bopp "0.1.0"]
+                 ...])
+```
+
+In your Clojure files, remember to require functions from `core.clj`, e.g.:
+```
+(ns bar
+  (require [bopp.core :refer :all]))
+```
+
+Though BOPP currently runs of a snapshot of Anglican that means you don't need to install Anglican explicitly, is does have the same requirements in terms of java, Leiningen etc  and so we refer the reader to http://www.robots.ox.ac.uk/~fwood/anglican/usage/index.html and recommend that users follow section 2 in the user start up guide.  We also recommend that you familiarize yourself on the syntax of Anglican through the
 provided link, as this is the same syntax as Anglican, with the addition of the forms `defopt` and `doopt`.
-
-
-*Temporary*
-At present you also need to download [Deodorant](http://github.com/probprog/deodorant) manually and do a lein install.  We will update this very soon so that its taken straight from clojars.
 
 ## License ##
 
