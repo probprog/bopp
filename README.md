@@ -97,6 +97,7 @@ In your Clojure files, remember to require functions from `core.clj`, e.g.:
 (ns bar
   (require [bopp.core :refer :all]))
 ```
+The full documentation can be found [here](https://probprog.github.io/bopp/). Checkout [core/defopt](https://probprog.github.io/bopp/bopp.core.html#var-defopt) and [core/doopt](https://probprog.github.io/bopp/bopp.core.html#var-doopt) in particular.
 
 Though BOPP currently runs of a snapshot of Anglican that means you don't need to install Anglican explicitly, is does have the same requirements in terms of java, Leiningen etc  and so we refer the reader to http://www.robots.ox.ac.uk/~fwood/anglican/usage/index.html and recommend that users follow section 2 in the user start up guide.  We also recommend that you familiarize yourself on the syntax of Anglican through the
 provided link, as this is the same syntax as Anglican, with the addition of the forms `defopt` and `doopt`.
