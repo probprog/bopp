@@ -24,10 +24,8 @@ Rainforth, T., Le, T. A., van de Meent, J.-W., Osborne, M. A., & Wood, F. (2016)
     title = {Bayesian Optimization for Probabilistic Programs},
     author = {Rainforth, Tom and Le, Tuan Anh and van de Meent, Jan-Willem and Osborne, Michael A and Wood, Frank},
     booktitle = {Advances in Neural Information Processing Systems 29},
-    editor = {D. D. Lee and M. Sugiyama and U. V. Luxburg and I. Guyon and R. Garnett},
     pages = {280--288},
     year = {2016},
-    publisher = {Curran Associates, Inc.},
     url = {http://papers.nips.cc/paper/6421-bayesian-optimization-for-probabilistic-programs.pdf}
 }
 ```
@@ -99,7 +97,7 @@ and practically limited to around 400-500.
 ### Examples ###
 
 A number of worksheets are provided to give example usage in different cases.  These can be accessed in a Gorilla REPL by running
-`lein gorilla` from the base folder and going through worksheets in the `worksheets/` folder.
+`lein gorilla` from the base folder and going through worksheets in the `worksheets/` folder.  You can also see (but not run) an example worksheet without installing BOPP [here](http://www.robots.ox.ac.uk/~fwood/anglican/examples/viewer/?source=github&user=probprog&repo=bopp&path=worksheets/chaos.clj).
 
 This is still a working version and is different to the code used for the paper.  We have made so people can use it during the conference, but intend to keep working on it through the conference and after. Note also, that the examples are set to run with a `:fast` option.
 
@@ -107,14 +105,14 @@ This is still a working version and is different to the code used for the paper.
 
 Copyright © Tom Rainforth, Tuan Anh Le, Jan-Willem van de Meent, Michael Osborne and Frank Wood
 
-Deodorant is free software: you can redistribute it and/or modify
+BOPP is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-Deodorant is distributed in the hope that it will be useful,
+BOPP is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
-You should have received a copy of the [GNU General Public License](gpl-3.0.txt) along with Deodorant.  If not, see [http://www.gnu.org/licenses/](http://www.gnu.org/licenses/).
+You should have received a copy of the [GNU General Public License](gpl-3.0.txt) along with BOPP.  If not, see [http://www.gnu.org/licenses/](http://www.gnu.org/licenses/).
