@@ -2,6 +2,8 @@
 
 See our [NIPS Spotlight video](https://www.youtube.com/watch?v=gVzV-NxKa9U) for TLDR.
 
+Latest release: bopp "0.1.1"
+
 BOPP is a package for automated marginal maximum a posteriori inference (MMAP) based around the
 probabilistic programming system [Anglican](http://www.robots.ox.ac.uk/~fwood/anglican).  The
 user only needs to write their model in the same manner as existing Anglican programs and by using
@@ -37,7 +39,7 @@ To use BOPP in your own [Leiningen](http://leiningen.org/) projects, just includ
 (defproject foo
   ...
   :dependencies [...
-                 [bopp "0.1.0"]
+                 [bopp "0.1.1"]
                  ...])
 ```
 
