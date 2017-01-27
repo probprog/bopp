@@ -218,9 +218,11 @@
 
   Output:
     Lazy list of increasingly optimal (in the MMAP sense) triples
-    (opt-vars, log-marginal, program-results):
+    (opt-vars, log-marginal-gp, log-marginal-raw, program-results):
       opt-vars ... optimization variables
-      log-marginal ... the log marginal likelihood p(observes, opt-vars)
+      log-marginal-raw ... the log marginal likelihood p(observes, opt-vars) as
+                   estimated by the gps (i.e. gp mixture means at this point)
+      log-marginal-raw ... estimate of log marginal when evaluated
       program-results ... program results associated with opt-vars
 
   See paper for details."
@@ -276,6 +278,7 @@
         [(or acq-opt-num-starts acq-opt-num-starts-default)
          (merge bo-options-default bo-options)]
 
+
         ;; Optimization options error checking
         _ (if (and (not (= opt-type :custom))
                    (not (some nil? [opt-program-transformation opt-sample-summarizer opt-bo-target-transformation])))
@@ -302,6 +305,10 @@
                  :ml2 (:ml2-query opt-query)
                  (throw (Exception. (str "opt-program-transformation " opt-program-transformation " not supported. Supported: :mmap, :ml2."))))
 
+        bo-options (if (= opt-type :risk-minimization)
+                     (merge bo-options {:invert-output-display true})
+                     bo-options)
+
         ;; Inference option
         num-particles (or num-particles num-samples)
 
@@ -325,4 +332,9 @@
 
         ;; Setup BO options to pass in an apply
         bo-options (flatten (into [] (filter second bo-options)))]
-    (apply bo/deodorant f aq-optimizer theta-sampler bo-options)))
+    (let [output (apply bo/deodorant f aq-optimizer theta-sampler bo-options)]
+      (if (= :risk-minimization opt-type)
+        (map #(update % 1 -)
+         (map #(update % 2 -)
+          output))
+        output))))
