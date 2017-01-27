@@ -26,7 +26,7 @@
   (observe* [this value] value))
 ;; @@
 ;; =>
-;;; {"type":"html","content":"<span class='clj-unkown'>#multifn[print-method 0x20e0be40]</span>","value":"#multifn[print-method 0x20e0be40]"}
+;;; {"type":"html","content":"<span class='clj-unkown'>#multifn[print-method 0x1d79a227]</span>","value":"#multifn[print-method 0x1d79a227]"}
 ;; <=
 
 ;; **
@@ -34,11 +34,11 @@
 ;; **
 
 ;; **
-;;; @@f(x) = \left(x\_2-\frac{5.1}{4\pi^2}x\_1^2+\frac{5}{\pi}x\_1-6\right)^2+10(1-\frac{1}{8\pi}\cos(x\_1))+10@@
+;;; @@f(x) = -\left(x\_2-\frac{5.1}{4\pi^2}x\_1^2+\frac{5}{\pi}x\_1-6\right)^2-10(1-\frac{1}{8\pi}\cos(x\_1))-10@@
 ;;; 
 ;;; Bounds @@-5 \le x\_1 \le 10@@ and @@0 \le x\_2 \le 15@@.
 ;;; 
-;;; There are three global minimum, @@f(x^\*) = 0.397887@@ at @@x^\* = (-\pi,12,1275), (\pi,2.275) ~\rm{and}~ (9.42478,2.475)@@.
+;;; There are three global maximum, @@f(x^\*) = -0.397887@@ at @@x^\* = (-\pi,12,1275), (\pi,2.275) ~\rm{and}~ (9.42478,2.475)@@.
 ;; **
 
 ;; **
@@ -55,10 +55,8 @@
                6)
          t2 (* 10
                (- 1 (/ 1 (* 8 Math/PI)))
-               (cos x1))
-         branin (- 0 (+ (pow t1 2) t2 10))
-         prior-correction (+ (log 15) (log 15))]
-     (observe (factor) (+ branin prior-correction)))))
+               (cos x1))]
+     (observe (factor) (+ (pow t1 2) t2 10)))))
 ;; @@
 ;; =>
 ;;; {"type":"html","content":"<span class='clj-var'>#&#x27;worksheets.opt/branin-opt</span>","value":"#'worksheets.opt/branin-opt"}
@@ -69,7 +67,13 @@
 ;; **
 
 ;; @@
-(def branin-samples (->> (doopt :importance branin-opt [] 1 :bo-options {:verbose true :b-deterministic true})
+(def branin-samples (->> (doopt :importance 
+                                branin-opt 
+                                [] 
+                                1 
+                                :bo-options {:verbose 1 
+                                             :b-deterministic true}
+                                :opt-type :risk-minimization)
                 		 (take 100) ;; Number of optimization iterations to do
                 		 doall
                 		 (mapv #(take 2 %))))
@@ -140,7 +144,7 @@ branin-samples
                    (mat/sub 0 terms-reduced))
         f (- 0
              (reduce + (mat/mul alpha exp-terms)))]
-    (- f)))
+    f))
 
 (with-primitive-procedures [factor hartmann-6d]
  (defopt hartmann-opt [] [x1 x2 x3 x4 x5 x6]
@@ -150,10 +154,8 @@ branin-samples
          x4 (sample (uniform-continuous 0 1))
          x5 (sample (uniform-continuous 0 1))
          x6 (sample (uniform-continuous 0 1))
-         f (hartmann-6d x1 x2 x3 x4 x5 x6)
-         prior-correction 0]
-     (observe (factor)
-              (+ f prior-correction)))))
+         f (hartmann-6d x1 x2 x3 x4 x5 x6)]
+     (observe (factor) f))))
 ;; @@
 ;; =>
 ;;; {"type":"html","content":"<span class='clj-var'>#&#x27;worksheets.opt/hartmann-opt</span>","value":"#'worksheets.opt/hartmann-opt"}
@@ -164,7 +166,13 @@ branin-samples
 ;; **
 
 ;; @@
-(def hartmann6d-samples (->> (doopt :importance hartmann-opt [] 1 :bo-options {:verbose true :b-deterministic true})
+(def hartmann6d-samples (->> (doopt :importance 
+                                hartmann-opt
+                                [] 
+                                1 
+                                :bo-options {:verbose 1 
+                                             :b-deterministic true}
+                                :opt-type :risk-minimization)
                 		 (take 100) ;; Number of optimization iterations to do
                 		 doall
                 		 (mapv #(take 2 %))))

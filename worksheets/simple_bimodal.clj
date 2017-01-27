@@ -32,7 +32,7 @@
                          simple-bimodal
                          [5]
                          1 ;; Number of particles
-                         :bo-options {:verbose true})
+                         :bo-options {:verbose 1})
                 (take 50) ;; Number of optimization iterations to do
                 doall
                 (mapv #(take 2 %))))
