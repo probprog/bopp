@@ -349,8 +349,8 @@
         samples (->> (doopt :smc hmm-simple-opt
                             [(second (hmm-data n-data))]
                             number-of-particles
-                            :bo-verbose true
-                            :bo-debug-folder (str folder-name n-data))
+                            :bo-options {:verbose 1
+                                         :debug-folder (str folder-name n-data)})
                      (take (int (/ number-of-samples number-of-particles)))
                      doall)
         points (mapv #(vec [(first %) (second %)]) samples)

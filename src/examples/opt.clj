@@ -45,8 +45,8 @@
            branin-opt
            []
            1
-           :bo-verbose true
-           :bo-debug-folder (str "branin" common-name n-test)))
+           :bo-options {:verbose 1
+                        :debug-folder (str "branin" common-name n-test)}))
   (mapv #(first %) (doall (take n-steps branin-seq)))) ; n-steps = 200
 
 ;;; LDA ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -124,8 +124,8 @@
            lda-opt
            []
            2
-           :bo-verbose true
-           :bo-debug-folder (str "LDA" common-name n-test)))
+           :bo-options {:verbose 1
+                        :debug-folder (str "LDA" common-name n-test)}))
   (mapv #(first %) (doall (take n-steps lda-seq)))) ; n-steps = 50
 
 ;;; SVM ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -256,8 +256,8 @@
            svm-opt
            []
            1
-           :bo-verbose true
-           :bo-debug-folder (str "SVM" common-name n-test)))
+           :bo-options {:verbose 1
+                        :debug-folder (str "SVM" common-name n-test)}))
   (mapv #(first %) (doall (take n-steps opt-results-svm)))) ; n-steps = 100
 
 ;;; Hartmann-6d ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -311,8 +311,8 @@
            h6
            []
            1
-           :bo-verbose true
-           :bo-debug-folder (str "hartman" common-name n-test)))
+           :bo-options {:verbose 1
+                        :debug-folder (str "hartman" common-name n-test)}))
   (mapv #(first %) (doall (take n-steps h6-results3)))) ; n-steps = 200
 
 ;;; Execution code ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

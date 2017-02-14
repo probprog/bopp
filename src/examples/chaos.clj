@@ -302,8 +302,8 @@
         samples (->> (doopt :smc kalman-chaos-opt
                             [observations]
                             number-of-particles
-                            :bo-verbose true
-                            :bo-debug-folder (str folder-name n-data))
+                            :bo-options {:verbose 1
+                                         :bo-debug-folder (str folder-name n-data)})
                      (take (int (/ number-of-samples number-of-particles)))
                      doall)
         points (mapv #(vec [(first %) (second %)]) samples)

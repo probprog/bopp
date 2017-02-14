@@ -28,10 +28,10 @@
     (->> (doopt
           :importance model [5]
           num-samples
-          :bo-num-initial-thetas num-init
-          :bo-debug-folder folder-name
-          :bo-plot-aq plot-aq
-          :bo-verbose true)
+          :bo-options {:num-initial-thetas num-init
+                       :debug-folder folder-name
+                       :plot-aq plot-aq
+                       :verbose 1})
          (take num-steps)
          (json/write-str)
          (spit (str folder-name ".json")))))

@@ -31,11 +31,11 @@
 
 ;; **
 ;;; ## The Problem
-;;; 
+;;;
 ;;; We consider a hidden Markov model (HMM) with an unknown number of states.  This example demonstrates how BOPP can be applied to models which conceptually have an unknown number of variables, by generating all possible variables that might be needed, but then leaving some variables unused for some execution traces.  This avoids problems of varying base measures so that the MMAP problem is well defined  and provides a function with a fixed number of inputs as required by the BO scheme.  From the BO perspective, the target function is simply constant for variations in an unused variable.
-;;; 
-;;; HMMs are Markovian state space models with discrete latent variables.  Each latent state @@x\_t \in\{1,\dots,K\}, t=1,\dots,T@@ is defined conditionally on @@x\_{t-1}@@ through a set of discrete transition probabilities, whilst each output @@y\_t\in\mathbb{R}@@ is considered to be generated i.i.d. given @@x\_t@@.  We consider the following HMM, in which the number of states @@K@@, is also a random variable: 
-;;; 
+;;;
+;;; HMMs are Markovian state space models with discrete latent variables.  Each latent state @@x\_t \in\{1,\dots,K\}, t=1,\dots,T@@ is defined conditionally on @@x\_{t-1}@@ through a set of discrete transition probabilities, whilst each output @@y\_t\in\mathbb{R}@@ is considered to be generated i.i.d. given @@x\_t@@.  We consider the following HMM, in which the number of states @@K@@, is also a random variable:
+;;;
 ;;; @@\begin{align}
 ;;; K & \sim \text{Discrete}\{1,2,3,4,5\} \\\\
 ;;; T\_k &\sim \text{Dirichlet}\\{{1}\_{1:K}\\}, \quad \forall k=1,\dots,K \\\\
@@ -46,9 +46,9 @@
 ;;; x\_t | x\_{t-1} &\sim \text{Discrete}\\{T\_{x\_{t-1}}\\} \\\\
 ;;; y\_t | x\_t &\sim\mathcal{N}(\mu(x\_{t-1}),0.2).
 ;;; \end{align}@@
-;;; 
+;;;
 ;;; Our experiment is based on applying BOPP to the above model to do MMAP estimation with a single synthetic dataset, generated using @@K=3, \;\mu\_1 = -1, \;\mu\_2 = 0, \;\mu\_3 = 4, \;T\_1 = [0.9,0.1,0], \;T\_2=[0.2,0.75,0.05]@@ and @@T\_3=[0.1,0.2,0.7]@@.  Lets first first load the data and set the known parameters.
-;;; 
+;;;
 ;; **
 
 ;; @@
@@ -92,13 +92,13 @@
 
 ;; **
 ;;; ## Solution using BOPP
-;;; 
+;;;
 ;;; We now use BOPP to optimize both the number of states @@K@@ and the stick-breaking parameters @@\phi_k@@, with full inference performed on the other parameters.  BOPP therefore aims to maximize
-;;; 
+;;;
 ;;; @@\begin{align}
 ;;; p(K,\phi\_{k=1:5}|y\_{t=1:T}) = \iint p(K,\phi\_{k=1:5},x\_{t=1:T},T\_{k=1:K}|y\_{t=1:T}) \mathrm{d}x\_{t=1:T} \mathrm{d}T\_{k=1:K}.
 ;;; \end{align}@@
-;;; 
+;;;
 ;;; First we define our model using defopt
 ;; **
 
@@ -168,11 +168,11 @@
 ;; **
 
 ;; @@
-(def samples (->> (doopt :smc 
+(def samples (->> (doopt :smc
                          hmm-simple-opt
                          []
                          200 ;; Number of particles
-                         :bo-options {:verbose true})
+                         :bo-options {:verbose 1})
                 (take 100) ;; Number of optimization iterations to do
                 doall
                 (mapv #(take 2 %))))

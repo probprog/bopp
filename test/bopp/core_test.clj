@@ -14,8 +14,8 @@
     [a b]))
 
 (deftest doopt-test
-  (let [mmap-states (doopt :smc q [2] 100 :bo-options {:verbose true} :opt-type :mmap)
-        ml2-states (doopt :smc q [2] 100 :bo-options {:verbose true} :opt-type :ml2)]
+  (let [mmap-states (doopt :smc q [2] 100 :bo-options {:verbose 1} :opt-type :mmap)
+        ml2-states (doopt :smc q [2] 100 :bo-options {:verbose 1} :opt-type :ml2)]
     (is (first mmap-states)
         "testing whether mmap runs.")
     (is (first ml2-states)
@@ -47,7 +47,7 @@
 ;;         theta (sample (normal 1 1))]
 ;;     (observe (normal (+ a b) theta) y)
 ;;     [a b]))
-;; (def mmap-states (doopt :smc q4 [2] 100 :bo-options {:verbose true} :opt-type :mmap))
+;; (def mmap-states (doopt :smc q4 [2] 100 :bo-options {:verbose 1} :opt-type :mmap))
 
 ;; ;; This should be slow because there is an expensive operation before sampling all optim-vars
 ;; (defopt q5 [y] [theta psi]
