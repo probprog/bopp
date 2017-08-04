@@ -66,7 +66,7 @@
           query-args = fixed arguments to the defopt (i.e. its first argument)
           algorithm = inner inference algorithm to use
           num-samples = number of samples to take in inner inference algorithm
-          num-particles = number of particles to use in inner inferenec algorithm
+          inf-options = options to use in inner inferenec algorithm
           output-extractor = extracts additional outputs from the inner query,
                  e.g get-result-vector or get-predicts
           opt-bo-target-transformation = transformation function applied to the output of
@@ -83,7 +83,7 @@
    query-args
    algorithm
    num-samples
-   num-particles
+   inf-options
 
    opt-bo-target-transformation
    opt-sample-summarizer
@@ -91,11 +91,11 @@
    f-theta-inf
    output-extractor]
   (let [samples (take num-samples
-                      (infer algorithm
+                      (apply infer 
+                             algorithm
                              marg-q
                              (concat query-args theta)
-                             :number-of-particles
-                             num-particles))
+                             inf-options))
 
         f-theta (opt-bo-target-transformation (opt-sample-summarizer samples)) ;; Could be +-Infinity
         f-theta (if (= f-theta (/ -1. 0))
@@ -196,8 +196,15 @@
         (Default: nil; Suggested: identity, - for minimization)
 
     Inference options:
-      num-particles ... Number of particles during inference.
-        (Default: num-samples)
+      inf-options ... Options to be passed to the inference scheme.  Note
+        that default options are merged as with bo-options and so these with
+        overwrite the inference algorithm defaults if not set
+        (Default: 
+          if algorithm is :pcascade
+            {:number-of-threads (int (* 2 num-samples))
+             :number-of-particles num-samples}
+          otherwise
+            {:number-of-particles num-samples})
 
     Acquisition optimization/AIS options:
       acq-opt-num-starts ... Number of parallel optimizations to prevent
@@ -237,7 +244,7 @@
            opt-type opt-program-transformation opt-sample-summarizer opt-bo-target-transformation
 
            ;; Inference options
-           num-particles ;; FIXME: might want to include all inference options
+           inf-options
 
            ;; Acquisition optimization/AIS options
            acq-opt-num-starts ais-num-steps ais-start-exponent ais-end-exponent
@@ -309,13 +316,19 @@
                      (merge bo-options {:invert-output-display true})
                      bo-options)
 
-        ;; Inference option
-        num-particles (or num-particles num-samples)
-
+        ;; Inference options
+        inf-options-default (case algorithm
+                              :pcascade {:number-of-threads (int (* 2 num-samples))
+                                         :number-of-particles num-samples}
+                              {:number-of-particles num-samples})
+        inf-options (flatten 
+                       (into [] 
+                             (merge inf-options-default inf-options)))
+        
         ;; Setup the target function for BO
         f (fn [theta]
             (bo-target
-             theta marg-q opt-query-args algorithm num-samples num-particles opt-bo-target-transformation opt-sample-summarizer f-theta-inf output-extractor))
+             theta marg-q opt-query-args algorithm num-samples inf-options opt-bo-target-transformation opt-sample-summarizer f-theta-inf output-extractor))
 
         ais-num-steps (or ais-num-steps
                           (max 100 (int (* 2 (/ num-samples acq-opt-num-starts)))))
