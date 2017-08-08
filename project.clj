@@ -4,7 +4,7 @@
   :license {:name "GNU General Public License Version 3"
             :url "http://www.gnu.org/licenses/gpl.html"}
   :plugins [[lein-codox "0.10.2"]
-            [lein-gorilla "0.3.6"]]
+            [lein-gorilla "0.4.0"]]
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojars.tuananhle/anglican "1.1.1-BOPP"]
                  [deodorant "0.1.3"]
