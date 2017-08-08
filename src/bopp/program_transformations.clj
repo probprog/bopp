@@ -113,7 +113,7 @@
                                  [name (acq-prior-helper-transformation value optim-args mode :acq-f acq-f)])))))
 
        ;; else
-       (apply list kwd (map #(acq-prior-helper-transformation % optim-args mode :acq-f acq-f) args))))
+       (map #(acq-prior-helper-transformation % optim-args mode :acq-f acq-f) expr)))
    :else expr))
 
 (defn- prior-transformation
@@ -242,7 +242,7 @@
                                     [name (marg-transformation value optim-args mode)])))))
 
           ;; else
-          (apply list kwd (map #(marg-transformation % optim-args mode) args))))
+          (map #(marg-transformation % optim-args mode) expr)))
       :else expr))
 
 (defmacro mmap-query
