@@ -70,50 +70,41 @@
    (vector? expr) (mapv #(acq-prior-helper-transformation % optim-args mode :acq-f acq-f) expr)
    (map? expr) (update-values expr #(acq-prior-helper-transformation % optim-args mode :acq-f acq-f))
    (set? expr) (set (map #(acq-prior-helper-transformation % optim-args mode :acq-f acq-f) expr))
-   (seq? expr)
-   (let [[kwd & args] expr]
-     (case kwd
-       observe nil
-       let (loop [bindings (first args)
-                  transformed-bindings []]
-             (if (empty? bindings)
-               (apply list kwd (vec transformed-bindings) (map #(acq-prior-helper-transformation % optim-args mode :acq-f acq-f) (rest args)))
-               (let [[name value] (take 2 bindings)]
-                 (recur (drop 2 bindings)
-                        (concat transformed-bindings [name (if (some #(= name %) optim-args)
-                                                             `(~'let [~'value ~(acq-prior-helper-transformation value optim-args mode :acq-f acq-f)]
+   (seq? expr) (let [[kwd & args] expr]
+                 (case kwd
+                   observe nil
+                   let (loop [bindings (first args)
+                              transformed-bindings []]
+                         (if (empty? bindings)
+                           (apply list kwd (vec transformed-bindings) (map #(acq-prior-helper-transformation % optim-args mode :acq-f acq-f) (rest args)))
+                           (let [[name value] (take 2 bindings)]
+                             (recur (drop 2 bindings)
+                                    (concat transformed-bindings [name (if (some #(= name %) optim-args)
+                                                                         `(~'let [~'value ~(acq-prior-helper-transformation value optim-args mode :acq-f acq-f)]
 
-                                                                     ;; Error checking for detecting multiple instances of declaration of optim-vars during runtime.
-                                                                     (~'if (~'retrieve (~'symbol ~optim-args-key)
-                                                                                       (~'symbol ~(str name)))
-                                                                           (~'throw-exception ~(str "BOPP ERROR: Multiple instances of declaration of optimization variable " (str name) " detected!")))
+                                                                                 ;; Error checking for detecting multiple instances of declaration of optim-vars during runtime.
+                                                                                 (~'if (~'retrieve (~'symbol ~optim-args-key)
+                                                                                                   (~'symbol ~(str name)))
+                                                                                       (~'throw-exception ~(str "BOPP ERROR: Multiple instances of declaration of optimization variable " (str name) " detected!")))
 
-                                                                     ;; Store the sampled value in store-retrieve hashmap
-                                                                     (~'store (~'symbol ~optim-args-key)
-                                                                              (~'symbol ~(str name))
-                                                                              ~'value)
+                                                                                 ;; Store the sampled value in store-retrieve hashmap
+                                                                                 (~'store (~'symbol ~optim-args-key)
+                                                                                          (~'symbol ~(str name))
+                                                                                          ~'value)
 
-                                                                     (~'if (~'= (~'set (~'keys (~'retrieve (~'symbol ~optim-args-key))))
-                                                                                (~'set ~(mapv #(list 'symbol (str %)) optim-args)))
-                                                                           (~'return ~(cond (= mode "acq")
-                                                                                            (acq-prologue-code optim-args acq-f)
+                                                                                 (~'if (~'= (~'set (~'keys (~'retrieve (~'symbol ~optim-args-key))))
+                                                                                            (~'set ~(mapv #(list 'symbol (str %)) optim-args)))
+                                                                                       (~'return ~(cond (= mode "acq")
+                                                                                                        (acq-prologue-code optim-args acq-f)
 
-                                                                                            (= mode "prior")
-                                                                                            (prior-prologue-code optim-args))))
+                                                                                                        (= mode "prior")
+                                                                                                        (prior-prologue-code optim-args))))
 
-                                                                     ~'value)
-                                                             (acq-prior-helper-transformation value optim-args mode :acq-f acq-f))])))))
-       loop (loop [bindings (first args)
-                   transformed-bindings []]
-              (if (empty? bindings)
-                (apply list kwd (vec transformed-bindings) (map #(acq-prior-helper-transformation % optim-args mode :acq-f acq-f) (rest args)))
-                (let [[name value & bindings] bindings]
-                  (recur bindings
-                         (concat transformed-bindings
-                                 [name (acq-prior-helper-transformation value optim-args mode :acq-f acq-f)])))))
+                                                                                 ~'value)
+                                                                         (acq-prior-helper-transformation value optim-args mode :acq-f acq-f))])))))
 
-       ;; else
-       (apply list kwd (map #(acq-prior-helper-transformation % optim-args mode :acq-f acq-f) args))))
+                   ;; else
+                   (map #(acq-prior-helper-transformation % optim-args mode :acq-f acq-f) expr)))
    :else expr))
 
 (defn- prior-transformation
@@ -197,53 +188,44 @@
      replaced by a deterministic assignment."
   [expr optim-args mode]
   (cond
-    (vector? expr) (mapv #(marg-transformation % optim-args mode) expr)
-    (map? expr) (update-values expr #(marg-transformation % optim-args mode))
-    (set? expr) (set (map #(marg-transformation % optim-args mode) expr))
-    (seq? expr)
-      (let [[kwd & args] expr]
-        (case kwd
-          let (loop [bindings (first args)
-                     transformed-bindings []]
-                (if (empty? bindings)
-                  (apply list kwd (vec transformed-bindings) (map #(marg-transformation % optim-args mode) (rest args)))
-                  (let [[name value & bindings] bindings]
-                    (recur bindings
-                           (concat transformed-bindings
-                                   [name (if (some #(= name %) optim-args)
-                                           (if (= (first value) 'sample)
-                                             `(~'do
-                                               ;; Error checking for detecting instances of declaration of optim-vars during runtime.
-                                               (~'if (~'retrieve (~'symbol ~optim-args-key)
-                                                                 (~'symbol ~(str name)))
-                                                     (~'throw-exception ~(str "BOPP ERROR: Multiple instances of declaration of optimization variable " (str name) " detected!")))
+   (vector? expr) (mapv #(marg-transformation % optim-args mode) expr)
+   (map? expr) (update-values expr #(marg-transformation % optim-args mode))
+   (set? expr) (set (map #(marg-transformation % optim-args mode) expr))
+   (seq? expr) (let [[kwd & args] expr]
+                 (case kwd
+                   let (loop [bindings (first args)
+                              transformed-bindings []]
+                         (if (empty? bindings)
+                           (apply list kwd (vec transformed-bindings) (map #(marg-transformation % optim-args mode) (rest args)))
+                           (let [[name value & bindings] bindings]
+                             (recur bindings
+                                    (concat transformed-bindings
+                                            [name (if (some #(= name %) optim-args)
+                                                    (if (= (first value) 'sample)
+                                                      `(~'do
+                                                        ;; Error checking for detecting instances of declaration of optim-vars during runtime.
+                                                        (~'if (~'retrieve (~'symbol ~optim-args-key)
+                                                                          (~'symbol ~(str name)))
+                                                              (~'throw-exception ~(str "BOPP ERROR: Multiple instances of declaration of optimization variable " (str name) " detected!")))
 
-                                               ;; Store the sampled value in store-retrieve hashmap
-                                               (~'store (~'symbol ~optim-args-key)
-                                                        (~'symbol ~(str name))
+                                                        ;; Store the sampled value in store-retrieve hashmap
+                                                        (~'store (~'symbol ~optim-args-key)
+                                                                 (~'symbol ~(str name))
+                                                                 ~(symbol (str (str name) "-hat")))
+
+                                                        ~(cond (= mode "mmap")
+                                                               `(~'observe ~(marg-transformation (second value) optim-args mode) ~(symbol (str (str name) "-hat")))
+
+                                                               (= mode "ml2")
+                                                               nil)
+
                                                         ~(symbol (str (str name) "-hat")))
+                                                      (throw-exception "BOPP ERROR: Prior of optimization variables must be defined directly by a sample statement."))
+                                                    (marg-transformation value optim-args mode))])))))
 
-                                               ~(cond (= mode "mmap")
-                                                      `(~'observe ~(marg-transformation (second value) optim-args mode) ~(symbol (str (str name) "-hat")))
-
-                                                      (= mode "ml2")
-                                                      nil)
-
-                                               ~(symbol (str (str name) "-hat")))
-                                             (throw-exception "BOPP ERROR: Prior of optimization variables must be defined directly by a sample statement."))
-                                           (marg-transformation value optim-args mode))])))))
-          loop (loop [bindings (first args)
-                      transformed-bindings []]
-                 (if (empty? bindings)
-                   (apply list kwd (vec transformed-bindings) (map #(marg-transformation % optim-args mode) (rest args)))
-                   (let [[name value & bindings] bindings]
-                     (recur bindings
-                            (concat transformed-bindings
-                                    [name (marg-transformation value optim-args mode)])))))
-
-          ;; else
-          (apply list kwd (map #(marg-transformation % optim-args mode) args))))
-      :else expr))
+                   ;; else
+                   (map #(marg-transformation % optim-args mode) expr)))
+   :else expr))
 
 (defmacro mmap-query
   "Returns CPS'd query with the MMAP transformation applied."
