@@ -103,14 +103,6 @@
 
                                                                      ~'value)
                                                              (acq-prior-helper-transformation value optim-args mode :acq-f acq-f))])))))
-       loop (loop [bindings (first args)
-                   transformed-bindings []]
-              (if (empty? bindings)
-                (apply list kwd (vec transformed-bindings) (map #(acq-prior-helper-transformation % optim-args mode :acq-f acq-f) (rest args)))
-                (let [[name value & bindings] bindings]
-                  (recur bindings
-                         (concat transformed-bindings
-                                 [name (acq-prior-helper-transformation value optim-args mode :acq-f acq-f)])))))
 
        ;; else
        (map #(acq-prior-helper-transformation % optim-args mode :acq-f acq-f) expr)))
@@ -232,14 +224,6 @@
                                                ~(symbol (str (str name) "-hat")))
                                              (throw-exception "BOPP ERROR: Prior of optimization variables must be defined directly by a sample statement."))
                                            (marg-transformation value optim-args mode))])))))
-          loop (loop [bindings (first args)
-                      transformed-bindings []]
-                 (if (empty? bindings)
-                   (apply list kwd (vec transformed-bindings) (map #(marg-transformation % optim-args mode) (rest args)))
-                   (let [[name value & bindings] bindings]
-                     (recur bindings
-                            (concat transformed-bindings
-                                    [name (marg-transformation value optim-args mode)])))))
 
           ;; else
           (map #(marg-transformation % optim-args mode) expr)))
