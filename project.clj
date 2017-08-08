@@ -1,4 +1,4 @@
-(defproject bopp "0.1.4"
+(defproject bopp "0.1.5"
   :description "Bayesian Optimization for Probabilistic Programs."
   :url "http://github.com/probprog/bopp"
   :license {:name "GNU General Public License Version 3"
