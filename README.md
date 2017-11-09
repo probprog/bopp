@@ -90,7 +90,10 @@ where
 - `opt-query` = Query to be optimized, defined by defopt.
 - `opt-query-args` = Fixed inputs of opt-query-args (y in earlier example)
 - `num-samples` = Number of samples for constructing the estimator of the marginal.
-- `args` = Optional arguments as key-value pairs.  See docstring for `doopt`.
+- `args` = Optional arguments as key-value pairs.  See docstring for `doopt`. Note that, by default, 
+the arguments are setup for speed rather per iteration performance.  If you wish to run bopp as
+per the setup in the paper, or have a problem where the inference is particularly expensive, you
+should include in the option list `:speed-option :careful`.
 
 This returns a lazy infinite sequence of samples.  Call `take` on this will convert it
 to a fixed number of outputs.  Note that as BOPP is a GP based BO scheme, scaling in N is quite poor
@@ -100,8 +103,6 @@ and practically limited to around 400-500.
 
 A number of worksheets are provided to give example usage in different cases.  These can be accessed in a Gorilla REPL by running
 `lein gorilla` from the base folder and going through worksheets in the `worksheets/` folder.  You can also see (but not run) an example worksheet without installing BOPP [here](http://www.robots.ox.ac.uk/~fwood/anglican/examples/viewer/?source=github&user=probprog&repo=bopp&path=worksheets/chaos.clj).
-
-This is still a working version and is different to the code used for the paper.  We have made so people can use it during the conference, but intend to keep working on it through the conference and after. Note also, that the examples are set to run with a `:fast` option.
 
 ## License ##
 
